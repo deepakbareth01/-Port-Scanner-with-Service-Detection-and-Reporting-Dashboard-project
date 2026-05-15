@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Progress Bar -->
+<div class="progress mb-4" style="height: 28px;">
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+         role="progressbar"
+         style="width: 100%;">
+        Scan Completed Successfully
+    </div>
+</div>
+
+<!-- Header and Export Buttons -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Results for {{ target }}</h2>
+    <div>
+        <a href="/export/csv" class="btn btn-success btn-sm">
+            Download CSV
+        </a>
+        <a href="/export/pdf" class="btn btn-danger btn-sm">
+            Download PDF
+        </a>
+    </div>
+</div>
+
+<!-- Summary -->
+<div class="alert alert-info">
+    Total Open Ports Found: <strong>{{ total }}</strong>
+</div>
+
+{% if results %}
+
+<!-- Chart Card -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h4 class="mb-3">Open Ports Chart</h4>
+        <canvas id="portsChart" height="100"></canvas>
+    </div>
+</div>
+
+<!-- Results Table -->
+<div class="card shadow">
+    <div class="card-body">
+        <h4 class="mb-3">Detailed Results</h4>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Port</th>
+                        <th>Service</th>
+                        <th>Banner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in results %}
+                    <tr>
+                        <td>
+                            <span class="badge bg-primary fs-6">
+                                {{ item.port }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>{{ item.service }}</strong>
+                        </td>
+                        <td>
+                            {% if item.banner %}
+                                <small>{{ item.banner }}</small>
+                            {% else %}
+                                <span class="text-muted">No banner available</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation Buttons -->
+<div class="mt-4 d-flex gap-2">
+    <a href="/" class="btn btn-secondary">
+        New Scan
+    </a>
+    <a href="/history" class="btn btn-outline-primary">
+        View History
+    </a>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Create labels from port numbers
+    const labels = [
+        {% for item in results %}
+            "{{ item.port }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Each open port has a value of 1
+    const values = [
+        {% for item in results %}
+            1{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Create bar chart
+    new Chart(document.getElementById('portsChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Open Ports',
+                data: values,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                },
+                title: {
+                    display: true,
+                    text: 'Detected Open Ports'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    },
+                    title: {
+                        display: true,
+                        text: 'Open Status'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Port Number'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+{% else %}
+
+<!-- No Results -->
+<div class="alert alert-warning">
+    No open ports found.
+</div>
+
+<a href="/" class="btn btn-secondary">
+    New Scan
+</a>
+
+{% endif %}
+
+{% endblock %}

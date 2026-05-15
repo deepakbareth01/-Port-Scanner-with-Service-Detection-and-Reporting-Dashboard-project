@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow border-0 bg-dark text-white">
+            <div class="card-body p-5 text-center">
+                <h1 class="display-5 fw-bold">
+                    🔍 Automated Port Scanner Dashboard
+                </h1>
+                <p class="lead mt-3">
+                    Scan IP addresses and domain names to detect open ports,
+                    identify services, capture banners, and generate reports.
+                </p>
+
+                <div class="mt-4">
+                    <span class="badge bg-primary fs-6 me-2">Multithreaded Scan</span>
+                    <span class="badge bg-success fs-6 me-2">Service Detection</span>
+                    <span class="badge bg-warning text-dark fs-6 me-2">Banner Grabbing</span>
+                    <span class="badge bg-info text-dark fs-6 me-2">Chart.js Analytics</span>
+                    <span class="badge bg-danger fs-6 me-2">PDF Export</span>
+                    <span class="badge bg-secondary fs-6">CSV Export</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scan Form -->
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h3 class="mb-4">🚀 Start New Scan</h3>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            Target IP Address or Domain Name
+                        </label>
+                        <input
+                            type="text"
+                            class="form-control form-control-lg"
+                            name="target"
+                            placeholder="scanme.nmap.org"
+                            required
+                        >
+                        <div class="form-text">
+                            Example: 127.0.0.1, localhost, or scanme.nmap.org
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Start Port</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="start_port"
+                                value="1"
+                                min="1"
+                                max="65535"
+                            >
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">End Port</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                name="end_port"
+                                value="1024"
+                                min="1"
+                                max="65535"
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-2">
+                        🔍 Start Port Scan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Information -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h4>🧪 Safe Test Target</h4>
+                <p class="mb-2">
+                    Use this public host for testing:
+                </p>
+                <code>scanme.nmap.org</code>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h4>📌 Recommended Ports</h4>
+                <ul class="mb-0">
+                    <li>20–100 (Quick Demo)</li>
+                    <li>1–1024 (Common Services)</li>
+                    <li>1–65535 (Full Scan)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-body">
+                <h4>📈 Project Highlights</h4>
+                <ul class="mb-0">
+                    <li>Open Port Detection</li>
+                    <li>Service Identification</li>
+                    <li>Banner Grabbing</li>
+                    <li>Database Storage</li>
+                    <li>Interactive Charts</li>
+                    <li>PDF & CSV Reports</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
